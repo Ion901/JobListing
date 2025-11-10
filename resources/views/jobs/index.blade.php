@@ -1,45 +1,49 @@
 <x-layout>
     <div class="space-y-10">
-        <section class="text-center py-5">
-            <h1 class="font-bold text-4xl">Let's find your next Job</h1>
 
-            {{-- <form action="" class="mt-6">
-                <input type="text" name="" id="" placeholder="Web Developer..." class="rounded-xl border border-white/10 bg-white/5 px-5 py-4 w-full max-w-xl">
-            </form> --}}
+        <x-forms.final-form />
 
-            <x-forms.form action="/search" class="mt-6">
-                <x-forms.input name="q" :label="false" placeholder="Web Developer..." class="rounded-xl border border-white/10 bg-white/6 px-5 py-4 w-full max-w-xl"></x-forms.input>
-            </x-forms.form>
+        @if (request()->routeIs('jobs'))
+            <x-sorting-compartiment />
 
-        </section>
+            <section class="text-center p-5 bg-white/5 rounded-xl">
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(170px,auto))] gap-1 justify-items-center">
+                    @foreach ($jobs as $job)
+                        <x-employer-card :job="$job"
+                            aditionalStyle="mx-auto max-h-[40px] md:max-h-[65px] aspect-3/2 object-contain "
+                            width="130" />
+                    @endforeach
+                </div>
+            </section>
+        @else
+            <section class="pt-10">
+                <x-section-heading>Featured Jobs</x-section-heading>
 
-        <section class="pt-10">
-            <x-section-heading>Featured Jobs</x-section-heading>
+                <div class="grid lg:grid-cols-3 gap-8 mt-6">
+                    @foreach ($featured as $job)
+                        <x-job-card :$job />
+                    @endforeach
+                </div>
+            </section>
 
-            <div class="grid lg:grid-cols-3 gap-8 mt-6">
-                @foreach ($featured as $job)
-                <x-job-card :$job />
-                @endforeach
-            </div>
-        </section>
+            <section>
+                <x-section-heading>Tags</x-section-heading>
+                <div class="mt-6 space-x-1">
+                    @foreach ($tags as $tag)
+                        <x-tag :$tag />
+                    @endforeach
 
-        <section>
-            <x-section-heading>Tags</x-section-heading>
-               <div class="mt-6 space-x-1">
-                @foreach ($tags as $tag)
-                    <x-tag :$tag />
-                @endforeach
-
-            </div>
-        </section>
+                </div>
+            </section>
+        @endif
 
         <section>
             <x-section-heading>Recent Jobs</x-section-heading>
-                <div class="mt-6 space-y-6">
-                    @foreach ($jobs as $job)
-                    <x-job-card-wide :$job/>
-                    @endforeach
-                </div>
+            <div class="mt-6 space-y-6">
+                @foreach ($jobs as $job)
+                    <x-job-card-wide :$job />
+                @endforeach
+            </div>
         </section>
     </div>
 </x-layout>

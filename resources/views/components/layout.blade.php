@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pixel Positions</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('scripts')
 </head>
 
 <body class="bg-black text-white pb-20">
@@ -20,10 +21,11 @@
             </div>
 
             <div class="space-x-6 font-bold">
-                <a href="#">Jobs</a>
+                <a href="{{ route('jobs') }}">Jobs</a>
                 <a href="#">Career</a>
                 <a href="#">Salaries</a>
                 <a href="#">Companies</a>
+                <a href="/weather">Weather</a>
             </div>
 
             @auth

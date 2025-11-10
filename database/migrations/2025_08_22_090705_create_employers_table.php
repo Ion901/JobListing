@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('name_slug');
             $table->string('logo');
             $table->foreignIdFor(User::class);
             $table->timestamps();

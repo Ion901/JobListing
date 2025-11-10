@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use App\Models\User;
@@ -41,15 +42,22 @@ class RegisteredUserController extends Controller
 
         $employerAttributes = $request->validate([
             'employer' => 'required',
-            'logo' => ['required', File::types(['png','jpg','webp'])]
+            'logo' => ['required',
+                        File::types(['png','jpg','webp']),
+                        Rule::dimensions()
+                        ->width(200)
+                        ->height(100)],[
+                        'logo.dimensions' => "Dimensiunile nu se potrives - 200x100px"
+                        ]
         ]);
 
         $user = User::create($userAttributes);
 
         $logoPath = $request->logo->store('logos'); //accesam proprietatea requestului iar in cadrului campului logo din array era o instanta o biectului File, la care avem acces asupra metodaelor acestei instante. Se va salava in storage/app/public/logos
+
         $user->employer()->create([
             'name' => $employerAttributes['employer'],
-            'logo' => $logoPath
+            'logo' => substr($logoPath,6), //stergem logos/ din path imaginii
         ]);
 
         Auth::login($user);

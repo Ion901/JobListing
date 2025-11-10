@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\Tag;
-use App\Http\Requests\UpdateJobRequest;
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Arr;
@@ -17,14 +17,44 @@ class JobController extends Controller
      */
     public function index()
     {
-        //grupeaza in grupe dupa feature, daca am 2[0,1] atunci imi returneaza o colectie cu colectii
-        $job = Job::latest()->with(['employer','tags'])->get()->groupBy('feature');
+        $employers = Employer::all();
+        $job = Job::with('employer')->latest()->get()->groupBy('feature');
 
-        return view('jobs.index',[
+        return view('jobs.index', [
             'featured' => $job[0],
             'jobs' => $job[1],
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'employers' => $employers,
         ]);
+    }
+
+    public function byTags(Tag $tags){
+        return view('jobs.tags',compact('tags'));
+    }
+
+    public function byCompany(){
+        $employers = Employer::with(['job'])->get();
+        return view('jobs.company',compact('employers'));
+    }
+
+    public function byStudy(){
+        $alphabet = collect(explode(',','A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'));
+        $jobs = Job::orderBy('title')->get();
+        $indexedCollection = [];
+        $jobs->each(function($job) use (&$indexedCollection, $alphabet){
+            $firstLetter = strtoupper($job->title[0]);
+
+            if($alphabet->contains($firstLetter)){
+
+                if(!isset($indexedCollection[$firstLetter])){
+                    $indexedCollection[$firstLetter] = [];
+                }
+
+                $indexedCollection[$firstLetter][] = $job->title;
+            }
+        });
+
+        return view('jobs.studies',compact(['indexedCollection','alphabet']));
     }
 
     /**

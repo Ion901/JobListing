@@ -5,7 +5,9 @@
         <x-forms.input label="Name" name="name" />
         <x-forms.input label="Email" name="email" type="email" />
         <x-forms.input label="Password" name="password" type="password" />
-        <x-forms.input label="Password Confirmation" name="password_confirmation" type="password" />
+        <x-forms.checkbox-password label="Show Password" type="checkbox" name="show_password" targetId="#password"/>
+        <x-forms.input label="Password Confirmation" name="password_confirmation" type="password"/>
+        <x-forms.checkbox-password label="Show Password" type="checkbox" name="show_password" targetId="#password_confirmation"/>
 
         <x-forms.divider />
         <x-forms.input label="Employer Name" name="employer" />

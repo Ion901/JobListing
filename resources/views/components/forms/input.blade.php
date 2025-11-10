@@ -14,3 +14,10 @@
     <input {{ $attributes($defaults) }}>
 </x-forms.field>
 
+
+@if($attributes['type'] === 'password')
+    @push('scripts')
+    @vite('resources/js/toggleVisibility.js')
+    @endpush
+@endif
+

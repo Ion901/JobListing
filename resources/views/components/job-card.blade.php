@@ -8,7 +8,9 @@
                 {{ $job->title }}
             </a>
         </h3>
-          <p class="text-sm mt-4">{{ $job->schedule }} - From {{ $job->salary }}</p>
+
+        <h2 class="text-sm mt-2">Actualizat : {{ $job->created_at->diffForHumans()}}</h2>
+        <p class="text-sm mt-4">{{ $job->schedule }} - From {{ $job->salary }}</p>
       </div>
 
       <div class="flex justify-between items-center mt-auto ">

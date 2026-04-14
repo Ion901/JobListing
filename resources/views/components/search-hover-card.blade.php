@@ -11,7 +11,7 @@
 @endphp
 
 
-<a href="{{ route($route) }}" {{$attributes('class' => $class)}}>
+<a href="{{ route($route) }}" {{$attributes->class([$class])}}>
     {{ $slot }}
 <span>{{ $title }}</span>
 </a>

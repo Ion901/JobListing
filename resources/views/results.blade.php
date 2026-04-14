@@ -1,5 +1,6 @@
 <x-layout>
-    <x-page-heading>Results</x-page-heading>
+
+    <x-forms.final-form />
 
     <div class="space-y-6">
         @foreach ($jobs as $job)

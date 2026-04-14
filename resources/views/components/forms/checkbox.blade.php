@@ -1,18 +1,19 @@
-@props(['label', 'name'])
+@props(['label', 'name','class' => ""])
 
 @php
     $defaults = [
         'type' => 'checkbox',
         'id' => $name,
         'name' => $name,
-        'value' => old($name)
+        'value' => old($name),
+        'class' => $class
     ];
 @endphp
 
-<x-forms.field :$label :$name>
-    <div class="rounded-xl bg-white/10 border border-white/10 px-5 py-4 w-full">
+<x-forms.field :$name>
+    <div class="flex items-center">
         <input {{ $attributes($defaults) }}>
-        <span class="pl-1">{{ $label }}</span>
+        <span class="pl-1 text-sm text-gray-900 dark:text-white">{{ $label }}</span>
     </div>
 </x-forms.field>
 

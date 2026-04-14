@@ -1,8 +1,11 @@
-@props(['job','aditionalStyle','width' => ""])
+@props(['data ' => '', 'aditionalStyle', 'width' => '', 'title' => ''])
 <x-panel class="p-3 w-full hover:shadow-2xl hover:cursor-pointer">
-    <div class="w-max space-x-1 m-auto">
-        <a href="{{ $job->employer->name_slug }}">
-            <x-employer-logo :employer="$job->employer" :width="$width" :aditionalStyle="$aditionalStyle"/>
+    <div class="w-full">
+        <a href="{{ $data->name_slug }}" class="w-full flex flex-col items-center justify-start">
+            <x-employer-logo :employer="$data" :width="$width" :aditionalStyle="$aditionalStyle" />
+            @if (request()->routeIs('company'))
+                <p class="w-full text-balance">{{ $data->name }}</p>
+            @endif
         </a>
     </div>
 </x-panel>

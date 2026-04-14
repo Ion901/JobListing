@@ -1,26 +1,31 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\SessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
-use App\Http\Controllers\WeatherController;
 
-Route::get('/', [HomeController::class, 'index']);
+use App\Http\Controllers\Auth\SocialiteController;
 
-Route::get('/weather', WeatherController::class);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/jobs',[JobController::class,'index'])->name('jobs');
-Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
-Route::post('/jobs', [JobController::class, 'store'])->middleware('auth');
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
+Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth', 'verified');
+Route::post('/jobs', [JobController::class, 'store'])->middleware('auth', 'verified');
 
-Route::prefix('/jobs')->group(function(){
-   Route::get('/tags',[JobController::class,'byTags'])->name('tags');
-   Route::get('/company',[JobController::class,'byCompany'])->name('company');
-   Route::get('/studies',[JobController::class, 'byStudy'])->name('studies');
+Route::prefix('/jobs')->group(function () {
+    Route::get('/tags', [JobController::class, 'byTags'])->name('tags');
+    Route::get('/company', [JobController::class, 'byCompany'])->name('company');
+    Route::get('/studies', [JobController::class, 'byStudy'])->name('studies');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
+    Route::get('auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('socialite.callback');
 });
 
 
@@ -36,3 +41,9 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [SessionController::class, 'store']);
 });
 Route::delete('logout', [SessionController::class, 'destroy']);
+
+Route::prefix('/email')->group(function () {
+    Route::get('/verify', [EmailVerificationController::class, 'view'])->middleware('auth')->name('verification.notice');
+    Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'validate_redirect'])->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::post('/verification-notification', [EmailVerificationController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+});

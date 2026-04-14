@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\SessionInstance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Controller;
+
 
 class SessionController extends Controller
 {
@@ -19,14 +21,18 @@ class SessionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SessionInstance $request)
     {
-        $attributes = $request->validate([
-            'email' =>'required|email',
-            'password' => 'required'
-        ]);
 
-        if(!Auth::attempt($attributes)){
+        $attributes = [
+            'email' => $request->validated('email'),
+            'password' => $request->validated('password')
+        ];
+
+        $remember_me = $request->validated('remember_me');
+
+
+        if (!Auth::attempt($attributes, $remember_me)) {
             throw ValidationException::withMessages([
                 'email' => 'Sorry, these credentials do not match'
             ]);

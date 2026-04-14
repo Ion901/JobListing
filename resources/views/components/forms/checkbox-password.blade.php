@@ -1,7 +1,7 @@
-@props(['label' => 'Show Password', 'type' => 'checkbox', 'targetId' => ''])
+@props(['label' => 'Show Password', 'targetId' => ''])
 
 
-<div class="text-left">
-    <input type="{{ $type }}" data-target="{{ $targetId }}" {{ $attributes }}>
-    <span class="pl-1">{{ $label }}</span>
+<div class="text-left absolute inset-y-1/5 right-2">
+    <x-icons.eye-password-icon class="text-white" data_target="{{ $targetId }}" />
+
 </div>

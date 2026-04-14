@@ -28,7 +28,8 @@ class JobController extends Controller
         ]);
     }
 
-    public function byTags(Tag $tags){
+    public function byTags(){
+        $tags = Tag::all();
         return view('jobs.tags',compact('tags'));
     }
 
@@ -38,9 +39,11 @@ class JobController extends Controller
     }
 
     public function byStudy(){
+        
         $alphabet = collect(explode(',','A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'));
         $jobs = Job::orderBy('title')->get();
         $indexedCollection = [];
+
         $jobs->each(function($job) use (&$indexedCollection, $alphabet){
             $firstLetter = strtoupper($job->title[0]);
 

@@ -1,5 +1,10 @@
 <x-layout>
+    
     <div class="space-y-10">
+
+        @if(request()->routeIs('jobs'))
+        {{ Breadcrumbs::render((string) request()->path()) }}
+        @endif
 
         <x-forms.final-form />
 
@@ -8,9 +13,9 @@
 
             <section class="text-center p-5 bg-white/5 rounded-xl">
                 <div class="grid grid-cols-[repeat(auto-fit,minmax(170px,auto))] gap-1 justify-items-center">
-                    @foreach ($jobs as $job)
-                        <x-employer-card :job="$job"
-                            aditionalStyle="mx-auto max-h-[40px] md:max-h-[65px] aspect-3/2 object-contain "
+                    @foreach ($employers as $employer)
+                        <x-employer-card :data="$employer"
+                            aditionalStyle="mx-auto max-h-[40px] md:max-h-[65px] aspect-3/2 object-contain"
                             width="130" />
                     @endforeach
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomEmailVerificationRequest;
 use Illuminate\Http\Request;
 
 class EmailVerificationController extends Controller
@@ -15,8 +16,9 @@ class EmailVerificationController extends Controller
     }
 
     //validate the email from the "verify email", redirect the view
-    public function validate_redirect(EmailVerificationRequest $request)
+    public function validate_redirect(CustomEmailVerificationRequest $request)
     {
+
         $request->fulfill();
 
         return redirect(route('home'));

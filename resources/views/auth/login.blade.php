@@ -17,7 +17,7 @@
                         <x-forms.checkbox name="remember_me" label="Remember Me"
                             class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-400 disabled:cursor-wait disabled:opacity-50" />
 
-                        <x-forms.link-action text="Forgot your password" link="/"
+                        <x-forms.link-action text="Forgot your password" link="{{ route('password.request') }}"
                             class="font-medium text-indigo-400 hover:text-indigo-500" />
                     </div>
 

@@ -1,7 +1,7 @@
 @props(['data' => ''])
 
 
-<a href="">
+<a href="{{ route('tags.show', $data) }}">
     {{ $data->name}}
 </a>
 

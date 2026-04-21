@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\SessionInstance;
-use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
@@ -25,8 +23,9 @@ class RegisterUserRequest extends SessionInstance
      */
     public function rules(): array
     {
+
         $rules = parent::rules();
-        $rules['role'] = ['required', 'string'];
+        $rules['role'] = ['required', 'string', Rule::in(['resume', 'vacancy'])];
         $rules['email'] = [...$rules['email'], Rule::unique('users')];
         $rules['password'] = [...$rules['password'], 'confirmed'];
 
@@ -39,6 +38,7 @@ class RegisterUserRequest extends SessionInstance
                     ->height(100)
             ];
 
+           
         return $rules;
     }
 

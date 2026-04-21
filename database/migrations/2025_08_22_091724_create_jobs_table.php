@@ -14,11 +14,11 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Employer::class);
+            $table->foreignIdFor(Employer::class)->constrained();
             $table->string('title');
-            $table->string('salary');
+            $table->decimal('salary',10,2)->default(0);
             $table->string('location');
-            $table->string('schedule')->default('Ful Time');
+            $table->string('schedule')->default('Full Time');
             $table->string('url');
             $table->boolean('feature')->default(false);
 

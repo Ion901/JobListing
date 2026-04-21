@@ -26,8 +26,8 @@
             <a href="{{ route('jobs') }}">Jobs</a>
             <a href="#">Career</a>
             <a href="#">Salaries</a>
-            <a href="#">Companies</a>
-            <a href="/weather">Weather</a>
+            <a href="{{ route('company') }}">Companies</a>
+            <a href="#">Weather</a>
         </div>
 
         @auth

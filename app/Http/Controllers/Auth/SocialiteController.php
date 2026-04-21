@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Socialite;
 use App\Models\User;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,7 +44,9 @@ class SocialiteController extends Controller
                     'oauth_id' => $socialiteUser->getId(),
                     'name' => $socialiteUser->getName() ?? $socialiteUser->getNickname(),
                     'email' => $socialiteUser->getEmail(),
-                    'email_verified_at' => now()
+                    'email_verified_at' => now(),
+                    'password' => Str::random(32),
+                    'role' => 'employee',
                 ]
             );
 
@@ -59,6 +62,8 @@ class SocialiteController extends Controller
 
     protected function validateProvider($provider)
     {
-        return in_array($provider, ['google', 'github']) ?? abort(404);
+        if (! in_array($provider, ['google', 'github'])) {
+            abort(404);
+        }
     }
 }

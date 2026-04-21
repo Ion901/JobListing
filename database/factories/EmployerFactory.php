@@ -20,8 +20,8 @@ class EmployerFactory extends Factory
     {
         $name = fake()->company();
         return [
-           'name' => $name,
-           'name_slug' => Str::slug($name),
+           'company_name' => $name,
+           'company_slug' => Str::slug($name),
            'logo' => 'AOsHqyx7SX3q0s0tAmPrSaD0rkFvZ2on52jw3TTY.png',
            'user_id' => User::factory(),
         ];

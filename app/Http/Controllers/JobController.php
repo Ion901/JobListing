@@ -82,7 +82,7 @@ class JobController extends Controller
             'tags' => ['nullable',]
         ]);
 
-        $attributes['featured'] = $request->has('featured');
+        $attributes['feature'] = $request->has('featured');
 
         $job = Auth::user()->employer->job()->create(Arr::except($attributes,'tags'));
 

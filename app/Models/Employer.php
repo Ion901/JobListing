@@ -11,7 +11,7 @@ class Employer extends Model
     /** @use HasFactory<\Database\Factories\EmployerFactory> */
     use HasFactory;
 
-    protected $fillable = ['name','logo'];
+    protected $fillable = ['company_name','logo', 'company_slug','user_id'];
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -20,4 +20,11 @@ class Employer extends Model
     public function job(){
         return $this->hasMany(Job::class);
     }
+
+    public function getUserNameAttribute(): string
+    {
+        return $this->user->name;
+    }
+
+
 }

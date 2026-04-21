@@ -32,21 +32,23 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterUserRequest $request)
     {
+        $validated = $request->validated();
+
+        $role = $validated['role'] === 'vacancy' ? 'employer' : 'employee';
 
         $user = User::create([
-            'email' => $request->validated('email'),
-            'password' => $request->validated('password'),
-            'role' => $request->validated('role')
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'role' => $role,
         ]);
 
-        if ($request->input('role') === 'vacancy') {
-            $employerAttributes = $request->validated(['employer','logo']);
+        if ($role === 'employer') {
 
-            $logoPath = $request->logo->store('logos'); //accesam proprietatea requestului iar in cadrului campului logo din array era o instanta o biectului File, la care avem acces asupra metodaelor acestei instante. Se va salava in storage/app/public/logos7
+            $logoPath = $request->file('logo')->store('logos'); //accesam proprietatea requestului iar in cadrului campului logo din array era o instanta o biectului File, la care avem acces asupra metodaelor acestei instante. Se va salava in storage/app/public/logos7
 
             $user->employer()->create([
-                'name' => $employerAttributes['employer'],
-                'logo' => substr($logoPath, 6), //stergem logos/ din path imaginii
+                'email' => $request->validated('employer'),
+                'logo' => $logoPath, //stergem logos/ din path imaginii
             ]);
         }
 

@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['ouath_provider','oauth_id']);
+            $table->dropColumn(['oauth_provider','oauth_id']);
             $table->string('password')->nullable(false)->change();
         });
     }

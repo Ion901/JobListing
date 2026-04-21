@@ -12,11 +12,14 @@
                         data-testid="password" autocomplete="current-password" class="px-3 py-2.5 pr-9">
                         <x-forms.checkbox-password targetId="#password" />
                     </x-forms.input>
+                 <x-forms.bar-password />
+
 
                     <x-forms.input label="Password Confirmation" id="password_confirmation" name="password_confirmation"
                         type="password" data-testid="password" autocomplete="password_confirmation">
                         <x-forms.checkbox-password targetId="#password_confirmation" />
                     </x-forms.input>
+                     <p class="text-xs hidden" id="match-msg"></p>
 
                     <div class="flex items-center justify-evenly">
                         <x-forms.radio name="role" label="Find a job" value="resume" class="w-6 h-4 p-5" targetId="#resume"/>
@@ -66,24 +69,8 @@
     </div>
 
 
+    @push('scripts')
+        @vite('resources/js/validationPassword.js')
+    @endpush
 </x-layout>
-{{--
 
-<x-layout>
-    <x-page-heading>Register</x-page-heading>
-
-    <x-forms.form method="POST" action="/register" enctype="multipart/form-data">
-        <x-forms.input label="Name" name="name" />
-        <x-forms.input label="Email" name="email" type="email" />
-        <x-forms.input label="Password" name="password" type="password" />
-        <x-forms.checkbox-password label="Show Password" type="checkbox" name="show_password" targetId="#password"/>
-        <x-forms.input label="Password Confirmation" name="password_confirmation" type="password"/>
-        <x-forms.checkbox-password label="Show Password" type="checkbox" name="show_password" targetId="#password_confirmation"/>
-
-        <x-forms.divider />
-        <x-forms.input label="Employer Name" name="employer" />
-        <x-forms.input label="Employer Logo" name="logo" type="file" />
-
-
-        <x-forms.button>Create Account</x-forms.button>
-    </x-forms.form> --}}

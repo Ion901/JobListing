@@ -8,12 +8,17 @@ use Illuminate\Auth\Access\Response;
 
 class EmployerPolicy
 {
+
+    private function isAdmin(User $user): bool
+    {
+        return $user->role === "admin";
+    }
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -21,7 +26,7 @@ class EmployerPolicy
      */
     public function view(User $user, Employer $employer): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -29,7 +34,7 @@ class EmployerPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -37,7 +42,7 @@ class EmployerPolicy
      */
     public function update(User $user, Employer $employer): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -45,7 +50,7 @@ class EmployerPolicy
      */
     public function delete(User $user, Employer $employer): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -53,7 +58,7 @@ class EmployerPolicy
      */
     public function restore(User $user, Employer $employer): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -61,6 +66,6 @@ class EmployerPolicy
      */
     public function forceDelete(User $user, Employer $employer): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 }

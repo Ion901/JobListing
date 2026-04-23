@@ -14,10 +14,12 @@ return new class extends Migration
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
-            $table->string('company_name');
-            $table->string('company_slug');
-            $table->string('logo');
             $table->foreignIdFor(User::class)->constrained();
+            $table->string('contact_person')->nullable();  
+            $table->string('company_name');                
+            $table->string('company_slug');                
+            $table->string('logo')->nullable();            
+            $table->string('phone', 20)->nullable()->unique(); 
             $table->timestamps();
         });
     }

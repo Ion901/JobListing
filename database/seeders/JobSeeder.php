@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Employer;
+use App\Models\Experience;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Job;
@@ -17,6 +18,7 @@ class JobSeeder extends Seeder
     public function run(): void
     {
         $tag = Tag::factory(3)->create();
+
 
         //sequence in laravel
         Job::factory(10)->hasAttached($tag)->create(new Sequence([

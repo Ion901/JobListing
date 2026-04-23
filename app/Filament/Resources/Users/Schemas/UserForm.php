@@ -55,7 +55,7 @@ class UserForm
                         ->schema([
                             TextInput::make('company_name')
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function (Set $set, ?string $state,) {
+                                ->afterStateUpdated(function (Set $set,?string $state) {
                                     $set('company_slug', Str::slug($state));
                                 })
                                 ->required(),

@@ -1,7 +1,6 @@
 <x-layout>
-    
-    <div class="space-y-10">
 
+    <div class="space-y-10">
         @if(request()->routeIs('jobs'))
         {{ Breadcrumbs::render((string) request()->path()) }}
         @endif

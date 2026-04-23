@@ -11,7 +11,7 @@ class Job extends Model
     /** @use HasFactory<\Database\Factories\JobFactory> */
     use HasFactory;
 
-    protected $fillable = ['title','salary','location','schedule','feature','employer_id'];
+    protected $fillable = ['title','title_slug','salary','location','experience_id','education','description','schedule','feature','employer_id'];
 
     public function tag(string $name){
         $tag = Tag::firstOrCreate(['name' => $name]);
@@ -27,6 +27,10 @@ class Job extends Model
         return $this->belongsTo(Employer::class);
     }
 
+    public function experience(){
+        return $this->belongsTo(Experience::class);
+    }
+
 
     /**
      * Get the attributes that should be cast.
@@ -40,5 +44,5 @@ class Job extends Model
             'feature' => 'boolean',
         ];
     }
-    
+
 }

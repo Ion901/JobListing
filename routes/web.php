@@ -14,14 +14,14 @@ use App\Http\Controllers\Auth\SocialiteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
-Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth', 'verified');
-Route::post('/jobs', [JobController::class, 'store'])->middleware('auth', 'verified');
-
 Route::prefix('/jobs')->group(function () {
+    Route::get('/', [JobController::class, 'index'])->name('jobs'); 
+    Route::get('/create', [JobController::class, 'create'])->middleware('auth', 'verified');
+    Route::post('/', [JobController::class, 'store'])->middleware('auth', 'verified');
     Route::get('/tags', [JobController::class, 'byTags'])->name('tags');
     Route::get('/company', [JobController::class, 'byCompany'])->name('company');
     Route::get('/studies', [JobController::class, 'byStudy'])->name('studies');
+    Route::get('/{job:title_slug}', [JobController::class, 'show'])->name('job');
 });
 
 Route::middleware('guest')->group(function () {

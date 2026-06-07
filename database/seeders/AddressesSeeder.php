@@ -21,7 +21,7 @@ class AddressesSeeder extends Seeder
         foreach ($streets as $name => $street) {
             Address::firstOrCreate(
                 ['street' => $street['name']],
-                ['sector_id' => $street['sector_id'] ?? null]
+                ['city_id' => $street['sector_id'] ?? null]
             );
         }
     }

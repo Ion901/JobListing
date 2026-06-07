@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class EmployerResource extends Resource
 {
@@ -22,11 +24,30 @@ class EmployerResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Employer';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->when(
+                Auth::user()?->role === 'employer',
+                fn($q) => $q->where('user_id', Auth::user()?->id)
+            );
+    }
+
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        $query = static::getModel()::query();
+
+        if (Auth::user()->role === 'employer') {
+            return $query->where(fn($q) => $q->where('user_id', Auth::user()?->id)
+            )->count();
+        }
+        return $query->count();
     }
-    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return EmployerForm::configure($schema);

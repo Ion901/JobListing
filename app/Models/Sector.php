@@ -21,4 +21,9 @@ class Sector extends Model
     {
         return $this->hasMany(Address::class);
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

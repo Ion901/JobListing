@@ -1,9 +1,5 @@
-@props(['class' => "bg-blue-800 rounded py-2 px-6 font-bold"])
+@props(['class' => ''])
 
-@php
-    $defaults = [
-        'class' => $class
-    ];
-
-@endphp
-<button {{ $attributes($defaults) }}>{{ $slot }}</button>
+<button {{ $attributes->merge(['class' => "bg-blue-800 rounded py-2 px-6 font-bold $class"]) }}>
+    {{ $slot }}
+</button>

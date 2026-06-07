@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail, HasName, FilamentUser
 {
@@ -53,8 +54,20 @@ class User extends Authenticatable implements MustVerifyEmail, HasName, Filament
         ];
     }
 
+    public function isEmployee()
+    {
+        return $this->role === 'employee';
+    }
+
     public function employer(){
         return $this->hasOne(Employer::class);
+    }
+
+    public function jobs(): BelongsToMany
+    {
+        return $this->belongsToMany(Job::class)
+        ->withPivot('cv_path','status')
+        ->withTimestamps();
     }
 
     public function getFilamentName(): string
@@ -64,6 +77,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasName, Filament
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role == 'admin';
+        return match ($panel->getId()) {
+            'admin'    => $this->role === 'admin',
+            'employer' => $this->role === 'employer' || $this->role === 'admin',
+            default    => false,
+        };
     }
 }

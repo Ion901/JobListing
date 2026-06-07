@@ -7,7 +7,7 @@
                 <div>
                     <h2>{{ $letter }}</h2>
                     @foreach ($data[$letter] as $jobs)
-                        <p>{{ $jobs }}</p>
+                        <x-forms.link-action link="{{ '/search/'.Str::slug($jobs) }}" class="inline-block hover:text-blue-800 transition-colors duration-300">{{ $jobs }}</x-forms.link-action>
                     @endforeach
                 </div>
             @endif

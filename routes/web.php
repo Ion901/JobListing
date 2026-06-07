@@ -9,20 +9,29 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CvController;
 
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\EmployerController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/jobs')->group(function () {
-    Route::get('/', [JobController::class, 'index'])->name('jobs'); 
-    Route::get('/create', [JobController::class, 'create'])->middleware('auth', 'verified');
+    Route::get('/', [JobController::class, 'index'])->name('jobs');
+    Route::get('/panel', [JobController::class, 'panel'])->middleware('auth', 'verified')->name('panel');
     Route::post('/', [JobController::class, 'store'])->middleware('auth', 'verified');
+    Route::get('/career', [JobController::class, 'byCareer'])->name('career');
     Route::get('/tags', [JobController::class, 'byTags'])->name('tags');
+    Route::get('/salaries', [JobController::class, 'bySalaries'])->name('salaries');
     Route::get('/company', [JobController::class, 'byCompany'])->name('company');
     Route::get('/studies', [JobController::class, 'byStudy'])->name('studies');
     Route::get('/{job:title_slug}', [JobController::class, 'show'])->name('job');
 });
+
+Route::get('/company/{employer:company_slug}', [EmployerController::class,'view'])->name('company.show');
+
+Route::post('/send-cv/{job}', [CvController::class, 'send'])->name('cv');
+Route::get('/applications', [CvController::class, 'applications'])->name('applications');
 
 Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
@@ -30,8 +39,8 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::get('/search', SearchController::class);
-Route::get('/tags/{tag:name}', TagController::class)->name('tags.show');
+Route::get('/search/{job?}', SearchController::class);
+Route::get('/tags/{tag:slug}', TagController::class)->name('tags.show');
 
 
 Route::middleware(['guest'])->group(function () {

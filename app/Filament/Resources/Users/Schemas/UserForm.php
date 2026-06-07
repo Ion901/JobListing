@@ -55,7 +55,7 @@ class UserForm
                         ->schema([
                             TextInput::make('company_name')
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function (Set $set,?string $state) {
+                                ->afterStateUpdated(function (Set $set, ?string $state) {
                                     $set('company_slug', Str::slug($state));
                                 })
                                 ->required(),
@@ -81,11 +81,14 @@ class UserForm
                     ->revealable()
                     ->password()
                     ->confirmed()
-                    ->rules(['required', Password::defaults()]),
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->rules([Password::defaults()]),
                 TextInput::make('password_confirmation')
                     ->revealable()
                     ->password()
-                    ->rules(['required']),
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $operation): bool => $operation === 'create'),
             ]);
     }
 }

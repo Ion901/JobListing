@@ -8,13 +8,14 @@
     <title>Pixel Positions</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('scripts')
-    
-     <script src="https://kit.fontawesome.com/d258707c8d.js" crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/d258707c8d.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="bg-black text-white">
 
-    <nav id="navbar" class="sticky top-0 left-0 w-full z-50 flex justify-between items-center py-4 px-10 border-b border-white/10 bg-black/70 backdrop-blur transition-transform duration-300 ease-in-out">
+    <nav id="navbar"
+        class="sticky top-0 left-0 w-full z-50 flex justify-between items-center py-4 px-10 border-b border-white/10 bg-black/70 backdrop-blur transition-transform duration-300 ease-in-out">
 
         <div>
             <a href="/">
@@ -24,15 +25,20 @@
 
         <div class="space-x-6 font-bold">
             <a href="{{ route('jobs') }}">Jobs</a>
-            <a href="#">Career</a>
-            <a href="#">Salaries</a>
+            <a href="{{ route('career') }}">Career</a>
+            <a href="{{ route('salaries') }}">Salaries</a>
             <a href="{{ route('company') }}">Companies</a>
-            <a href="#">Weather</a>
+            @auth
+                @if (auth()->user()->isEmployee())
+                    <a href="{{ route('applications') }}">My Applications</a>
+                @endif
+
+            @endauth
         </div>
 
         @auth
             <div class="space-x-6 font-bold flex">
-                <a href="/jobs/create">Post a Job</a>
+                <a href="{{ route('panel') }}">Dashboard</a>
 
                 <form method="POST" action="/logout">
                     @csrf
@@ -55,6 +61,7 @@
             {{ $slot }}
         </main>
     </div>
+    <x-footer />
 
 </body>
 

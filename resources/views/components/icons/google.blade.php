@@ -1,4 +1,6 @@
- <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+@props(['class' => 'h-6 w-6', 'width' => '800px','height' => '800px'])
+
+ <svg class="{{ $class }}" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" width="{{ $width }}" height="{{ $height }}">
      <clipPath id="p.0">
          <path d="m0 0l20.0 0l0 20.0l-20.0 0l0 -20.0z" clip-rule="nonzero"></path>
      </clipPath>

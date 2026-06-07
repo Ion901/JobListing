@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class JobResource extends Resource
 {
@@ -23,9 +25,31 @@ class JobResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'job';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->when(
+                Auth::user()?->role === 'employer',
+                fn($query) => $query->whereHas(
+                    'employer',
+                    fn($q) =>
+                    $q->where('user_id', Auth::user()?->employer?->user_id)
+                )
+            );
+    }
+
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        $query = static::getModel()::query();
+
+        if (Auth::user()->role === 'employer') {
+            return $query->whereHas(
+                'employer',
+                fn($q) =>
+                $q->where('user_id', Auth::user()->id)
+            )->count();
+        }
+        return $query->count();
     }
 
     public static function form(Schema $schema): Schema

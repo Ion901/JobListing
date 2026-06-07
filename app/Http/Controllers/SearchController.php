@@ -7,11 +7,16 @@ use App\Models\Job;
 
 class SearchController extends Controller
 {
-    public function __invoke(){
-        $jobs = Job::with(['employer','tags'])
-        ->where('title','LIKE','%'.request('q').'%')
-        ->get();
+    public function __invoke($search = ' ')
+    {
+        $term = request('q') ?? $search;
 
-        return view('results',['jobs' => $jobs]);
+        $attr = request('q') ? 'title' : 'title_slug';
+
+        $jobs = Job::with(['employer', 'tags'])
+            ->where($attr, 'like', "%{$term}%")
+            ->get();
+
+        return view('results', ['jobs' => $jobs]);
     }
 }

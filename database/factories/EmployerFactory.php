@@ -24,6 +24,7 @@ class EmployerFactory extends Factory
            'company_slug' => Str::slug($name),
            'phone' => fake()->phoneNumber("+373########"),
            'contact_person' => fake()->name(),
+           'email' => fake()->companyEmail(),
            'logo' => 'AOsHqyx7SX3q0s0tAmPrSaD0rkFvZ2on52jw3TTY.png',
            'user_id' => User::factory(),
         ];

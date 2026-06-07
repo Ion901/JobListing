@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EmployerDescription;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,11 @@ class DatabaseSeeder extends Seeder
             Experience::firstOrCreate(['level' => $exp]);
         }
 
-        $this->call(JobSeeder::class);
+        $this->call([
+            CitiesSeeder::class,
+            SectorSeeder::class,
+            AddressesSeeder::class,
+            JobSeeder::class
+            ]);
     }
 }

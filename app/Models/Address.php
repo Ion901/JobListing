@@ -9,10 +9,15 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sector_id', 'street'];
+    protected $fillable = ['city_id', 'street'];
 
-    public function sector()
+    public function city()
     {
-        return $this->belongsTo(Sector::class);
+        return $this->belongsTo(City::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
     }
 }

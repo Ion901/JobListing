@@ -12,9 +12,12 @@ use Filament\Forms\Components\Toggle;
 use App\Filament\Resources\Tags\Schemas\TagForm;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\RichEditor\MentionProvider;
+use App\Models\Employer;
 
 class JobForm
 {
@@ -48,7 +51,20 @@ class JobForm
                             ->inline(false),
                     ]),
                 Select::make('employer_id')
-                    ->relationship('employer', 'company_name')
+                    ->relationship(
+                        name: 'employer',
+                        titleAttribute: 'company_name',
+                        modifyQueryUsing: fn($query) => Auth::user()?->role === 'admin'
+                            ? $query
+                            : $query->where('user_id', Auth::id())
+                    )
+                    ->default(function () {
+
+                        if (Auth::user()?->role === 'employer') {
+                            return Auth::user()?->employer?->id;
+                        }
+                        return null;
+                    })
                     ->preload()
                     ->createOptionForm(
                         EmployerForm::schema()
@@ -93,15 +109,38 @@ class JobForm
                     ])
                     ->label('Educație'),
 
-                    TextInput::make('url')
+                TextInput::make('url')
                     ->placeholder('Url')
                     ->columnSpanFull()
                     ->extraInputAttributes(['class' => 'text-gray-100'])
                     ->label('Url'),
 
-                    RichEditor::make('description')
+                Grid::make(3)
+                    ->columnSpanFull()
+                    ->schema([
+                        Select::make('city_id')
+                            ->relationship('city', 'name')
+                            ->label('Oraș')
+                            ->live(),
+
+                        Select::make('sector_id')
+                            ->relationship('sector', 'name')
+                            ->label('Sector')
+                            ->visible(fn(Get $get) => $get('city_id') === 11),
+
+                        Select::make('address_id')
+                            ->relationship('address', 'street')
+                            ->searchable()
+                            ->preload()
+                            ->label('Adresa')
+
+
+                    ]),
+
+                RichEditor::make('description')
                     ->columnSpanFull()
                     ->extraAttributes(['class' => 'min-h-[300px]'])
+                    ->required()
             ]);
     }
 }

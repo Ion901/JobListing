@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\City;
 
 return new class extends Migration
 {
@@ -13,13 +14,9 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sector_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete()
-                ->cascadeOnDelete();
+            $table->foreignIdFor(City::class)->nullable()->constrained()->cascadeOnDelete();
 
-            $table->string('street'); // or 'name'
+            $table->string('street');
             $table->timestamps();
         });
     }

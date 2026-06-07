@@ -19,8 +19,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Enums\UserMenuPosition;
-use Filament\Actions\Action;
-use App\Filament\Pages\Settings;
 
 
 class AdminPanelProvider extends PanelProvider
@@ -29,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandLogo(asset('storage/logos/logo.svg'))
+            ->homeUrl(url('/'))
             ->id('admin')
             ->path('admin')
             ->login()
@@ -40,12 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenu(
                 position: UserMenuPosition::Sidebar
             )
-            ->userMenuItems([
-                Action::make('settings')
-                    ->url(fn(): string => Settings::getUrl())
-                    ->icon('heroicon-o-cog-6-tooth'),
-                // ...
-            ])
+
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Zinc,
@@ -79,7 +74,10 @@ class AdminPanelProvider extends PanelProvider
             ->resourceEditPageRedirect('index')
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                'panels::auth.login.form.after',
+                fn() => view('auth.socialite-oauth-buttons')
+            );
     }
-
 }
